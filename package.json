@@ -1,5 +1,6 @@
 {
   "name": "angulartics2",
+  "version": "0.0.1",
   "description": "Vendor-agnostic web analytics for Angular2 applications",
   "homepage": "http://angulartics.github.io/",
   "author": "João Ribeiro <jonnybgod@gmail.com> (http://github.com/JonnyBGod)",
@@ -72,6 +73,7 @@
     "tslint": "^3.15.1",
     "tslint-loader": "^2.1.5",
     "typescript": "2.0.2",
+    "@uirouter/angular": "^1.0.0-beta.6",
     "webpack": "^1.13.2",
     "zone.js": "^0.6.21"
   },

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { Location } from '@angular/common';
-import { Router, NavigationEnd } from '@angular/router';
+import { TransitionService } from '@uirouter/angular';
 import 'rxjs/add/operator/filter';
 
 @Injectable()
@@ -67,18 +67,16 @@ export class Angulartics2 {
    */
   public userTimings: ReplaySubject<any> = new ReplaySubject(10);
 
-  constructor(location: Location, router: Router) {
-    this.trackLocation(location, router);
+  constructor(location: Location, $transitions: TransitionService) {
+    this.trackLocation(location, $transitions);
   }
 
-  trackLocation(location: Location, router: Router) {
-    router.events
-      .filter(event => event instanceof NavigationEnd)
-      .subscribe((event: NavigationEnd) => {
-        if (!this.settings.developerMode) {
-          this.trackUrlChange(event.urlAfterRedirects, location);
-        }
-      });
+  trackLocation(location: Location, $transitions: TransitionService) {
+    $transitions.onSuccess({}, () => {
+      if (!this.settings.developerMode) {
+        this.trackUrlChange(location.path(true), location);
+      }
+    });
   }
 
   virtualPageviews(value: boolean) {
@@ -96,7 +94,7 @@ export class Angulartics2 {
   developerMode(value: boolean) {
     this.settings.developerMode = value;
   }
-  
+
   protected trackUrlChange(url: string, location: Location) {
     if (!this.settings.developerMode) {
       if (this.settings.pageTracking.autoTrackVirtualPages && !this.matchesExcludedRoute(url)) {
